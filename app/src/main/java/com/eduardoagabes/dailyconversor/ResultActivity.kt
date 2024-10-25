@@ -35,62 +35,57 @@ class ResultActivity : AppCompatActivity() {
         val tieDistance = binding.tieDistance
         val tieVolume= binding.tieVolume
 
-        val fromWeightUnitPos = binding.spinnerWeight1.selectedItemPosition
-        val toWeightUnitPos = binding.spinnerWeight2.selectedItemPosition
-
-
-
         ArrayAdapter.createFromResource(
             this,
             R.array.weight_array,
-            android.R.layout.simple_spinner_item
+            R.layout.spinner_color
         ).also { adapter ->
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            adapter.setDropDownViewResource(R.layout.my_dropdown_item_color)
             binding.spinnerWeight1.adapter = adapter
         }
 
         ArrayAdapter.createFromResource(
             this,
             R.array.weight_array,
-            android.R.layout.simple_spinner_item
+            R.layout.spinner_color
         ).also { adapter ->
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            adapter.setDropDownViewResource(R.layout.my_dropdown_item_color)
             binding.spinnerWeight2.adapter = adapter
         }
 
         ArrayAdapter.createFromResource(
             this,
             R.array.distance_array,
-            android.R.layout.simple_spinner_item
+           R.layout.spinner_color
         ).also { adapter ->
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            adapter.setDropDownViewResource(R.layout.my_dropdown_item_color)
             binding.spinnerDistance1.adapter = adapter
         }
 
         ArrayAdapter.createFromResource(
             this,
             R.array.distance_array,
-            android.R.layout.simple_spinner_item
+            R.layout.spinner_color
         ).also { adapter ->
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            adapter.setDropDownViewResource(R.layout.my_dropdown_item_color)
             binding.spinnerDistance2.adapter = adapter
         }
 
         ArrayAdapter.createFromResource(
             this,
             R.array.volume_array,
-            android.R.layout.simple_spinner_item
+            R.layout.spinner_color
         ).also { adapter ->
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            adapter.setDropDownViewResource(R.layout.my_dropdown_item_color)
             binding.spinnerVolume1.adapter = adapter
         }
 
         ArrayAdapter.createFromResource(
             this,
             R.array.volume_array,
-            android.R.layout.simple_spinner_item
+            R.layout.spinner_color
         ).also { adapter ->
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            adapter.setDropDownViewResource(R.layout.my_dropdown_item_color)
             binding.spinnerVolume2.adapter = adapter
         }
 
@@ -100,14 +95,19 @@ class ResultActivity : AppCompatActivity() {
             val inputVolume = tieVolume.text.toString()
 
 
-            if (inputWeight.isNotEmpty()) {
+            if (inputWeight.isEmpty() && inputDistance.isEmpty() && inputVolume.isEmpty()) {
+                Snackbar.make(
+                    tvResult,
+                    "Todos los campos están vacíos",
+                    Snackbar.LENGTH_LONG
+                ).show()
+
+            } else if(inputWeight.isNotEmpty()) {
                 val fromWeightUnit = binding.spinnerWeight1.selectedItem.toString()
                 val toWeightUnit = binding.spinnerWeight2.selectedItem.toString()
                 val weightValue = inputWeight.toDouble()
                 val weightResult = convertWeight(weightValue, fromWeightUnit, toWeightUnit)
                 tvResult.text = "$weightResult"
-            } else {
-
             }
 
             if (inputDistance.isNotEmpty()) {
@@ -117,6 +117,7 @@ class ResultActivity : AppCompatActivity() {
                 val distanceResult = convertDistance(distanceValue, fromDistanceUnit, toDistanceUnit)
                 tvResult.text = "$distanceResult"
             }
+
             if (inputVolume.isNotEmpty()) {
                 val fromVolumeUnit = binding.spinnerVolume1.selectedItem.toString()
                 val toVolumeUnit = binding.spinnerVolume2.selectedItem.toString()
@@ -124,7 +125,6 @@ class ResultActivity : AppCompatActivity() {
                 val volumeResult = convertVolume(volumeValue, fromVolumeUnit, toVolumeUnit)
                 tvResult.text = "$volumeResult"
             }
-
         }
 
         binding.btnClean.setOnClickListener {
